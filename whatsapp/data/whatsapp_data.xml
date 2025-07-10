@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- WhatsApp Contact Tags -->
+        <record id="whatsapp_contact_tag_customer" model="whatsapp.contact.tag">
+            <field name="name">Customer</field>
+            <field name="color">1</field>
+        </record>
+        
+        <record id="whatsapp_contact_tag_supplier" model="whatsapp.contact.tag">
+            <field name="name">Supplier</field>
+            <field name="color">2</field>
+        </record>
+        
+        <record id="whatsapp_contact_tag_lead" model="whatsapp.contact.tag">
+            <field name="name">Lead</field>
+            <field name="color">3</field>
+        </record>
+        
+        <record id="whatsapp_contact_tag_vip" model="whatsapp.contact.tag">
+            <field name="name">VIP</field>
+            <field name="color">4</field>
+        </record>
+        
+        <!-- WhatsApp Template Categories -->
+        <record id="whatsapp_template_category_greeting" model="whatsapp.template.category">
+            <field name="name">Greeting</field>
+        </record>
+        
+        <record id="whatsapp_template_category_welcome" model="whatsapp.template.category">
+            <field name="name">Welcome</field>
+        </record>
+        
+        <record id="whatsapp_template_category_order" model="whatsapp.template.category">
+            <field name="name">Order</field>
+        </record>
+        
+        <record id="whatsapp_template_category_payment" model="whatsapp.template.category">
+            <field name="name">Payment</field>
+        </record>
+        
+        <record id="whatsapp_template_category_reminder" model="whatsapp.template.category">
+            <field name="name">Reminder</field>
+        </record>
+        
+        <record id="whatsapp_template_category_appointment" model="whatsapp.template.category">
+            <field name="name">Appointment</field>
+        </record>
+        
+        <record id="whatsapp_template_category_support" model="whatsapp.template.category">
+            <field name="name">Support</field>
+        </record>
+        
+        <record id="whatsapp_template_category_marketing" model="whatsapp.template.category">
+            <field name="name">Marketing</field>
+        </record>
+        
+        <record id="whatsapp_template_category_follow_up" model="whatsapp.template.category">
+            <field name="name">Follow Up</field>
+        </record>
+        
+        <record id="whatsapp_template_category_seasonal" model="whatsapp.template.category">
+            <field name="name">Seasonal</field>
+        </record>
+        
+        <record id="whatsapp_template_category_auto_reply" model="whatsapp.template.category">
+            <field name="name">Auto Reply</field>
+        </record>
+        
+        <record id="whatsapp_template_category_event" model="whatsapp.template.category">
+            <field name="name">Event</field>
+        </record>
+        
+        <!-- WhatsApp Default Templates -->
+        <record id="whatsapp_template_welcome" model="whatsapp.template">
+            <field name="name">Welcome Message</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_greeting"/>
+            <field name="content"><![CDATA[Hello {name}! Welcome to {company}. How can we help you today?]]></field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="whatsapp_template_order_confirmation" model="whatsapp.template">
+            <field name="name">Order Confirmation</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_order"/>
+            <field name="content">Hi {name}, your order #{order_number} has been confirmed. Total: {total}. Expected delivery: {delivery_date}.</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="whatsapp_template_appointment_reminder" model="whatsapp.template">
+            <field name="name">Appointment Reminder</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_reminder"/>
+            <field name="content">Hi {name}, this is a reminder about your appointment scheduled for {date} at {time}. Please confirm your attendance.</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="whatsapp_template_payment_received" model="whatsapp.template">
+            <field name="name">Payment Received</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_payment"/>
+            <field name="content">Hi {name}, we have received your payment of {amount} for invoice #{invoice_number}. Thank you!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="whatsapp_template_support_ticket" model="whatsapp.template">
+            <field name="name">Support Ticket</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_support"/>
+            <field name="content">Hi {name}, your support ticket #{ticket_number} has been created. Our team will respond within 24 hours.</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Additional Message Templates -->
+        
+        <!-- Welcome Templates -->
+        <record id="template_welcome_new_customer" model="whatsapp.template">
+            <field name="name">Welcome New Customer</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_welcome"/>
+            <field name="content">Hello {name}! 👋 Welcome to {company_name}. We're excited to have you as our customer. How can we help you today?</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_welcome_business" model="whatsapp.template">
+            <field name="name">Welcome Business Partner</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_welcome"/>
+            <field name="content">Hello {name}! Welcome to {company_name}. We're looking forward to a successful business partnership. Let's discuss how we can work together.</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Order Templates -->
+        <record id="template_order_confirmation_detailed" model="whatsapp.template">
+            <field name="name">Order Confirmation Detailed</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_order"/>
+            <field name="content">Hi {name}, your order #{order_number} has been confirmed! 📦
+
+Order Details:
+- Total: {total_amount}
+- Expected delivery: {delivery_date}
+- Tracking: {tracking_number}
+
+Thank you for your business!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_order_shipped" model="whatsapp.template">
+            <field name="name">Order Shipped</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_order"/>
+            <field name="content">Great news {name}! 🚚 Your order #{order_number} has been shipped.
+
+Tracking Number: {tracking_number}
+Expected Delivery: {delivery_date}
+
+You can track your package at: {tracking_url}</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_order_delivered" model="whatsapp.template">
+            <field name="name">Order Delivered</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_order"/>
+            <field name="content">Hi {name}! 📦✅ Your order #{order_number} has been delivered successfully.
+
+We hope you love your purchase! If you have any questions or need support, feel free to reach out.
+
+Thank you for choosing {company_name}!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Payment Templates -->
+        <record id="template_payment_received_detailed" model="whatsapp.template">
+            <field name="name">Payment Received Detailed</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_payment"/>
+            <field name="content">Hi {name}, we've received your payment of {amount} for invoice #{invoice_number}. 💰✅
+
+Payment Details:
+- Amount: {amount}
+- Method: {payment_method}
+- Date: {payment_date}
+
+Thank you for your prompt payment!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_payment_reminder" model="whatsapp.template">
+            <field name="name">Payment Reminder</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_payment"/>
+            <field name="content">Hi {name}, this is a friendly reminder that payment for invoice #{invoice_number} is due on {due_date}.
+
+Amount Due: {amount}
+Due Date: {due_date}
+
+Please make payment at your earliest convenience. If you have any questions, feel free to contact us.</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Appointment Templates -->
+        <record id="template_appointment_confirmation" model="whatsapp.template">
+            <field name="name">Appointment Confirmation</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_appointment"/>
+            <field name="content">Hi {name}, your appointment has been confirmed! 📅
+
+Details:
+- Date: {date}
+- Time: {time}
+- Location: {location}
+- Purpose: {purpose}
+
+We look forward to seeing you. Please arrive 10 minutes early.</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_appointment_reminder_detailed" model="whatsapp.template">
+            <field name="name">Appointment Reminder Detailed</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_appointment"/>
+            <field name="content">Hi {name}, this is a reminder about your appointment tomorrow at {time}. 📅⏰
+
+Location: {location}
+
+If you need to reschedule, please let us know as soon as possible. See you soon!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Support Templates -->
+        <record id="template_support_ticket_created" model="whatsapp.template">
+            <field name="name">Support Ticket Created</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_support"/>
+            <field name="content">Hi {name}, your support ticket #{ticket_number} has been created. 🎫
+
+Subject: {subject}
+Priority: {priority}
+
+Our team will respond within {response_time}. You can track your ticket status in your account.</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_support_ticket_resolved" model="whatsapp.template">
+            <field name="name">Support Ticket Resolved</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_support"/>
+            <field name="content">Hi {name}, your support ticket #{ticket_number} has been resolved! ✅
+
+Solution: {solution}
+
+If you're satisfied with the resolution, please rate our service. If you need further assistance, feel free to reach out.</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Marketing Templates -->
+        <record id="template_promotional_offer" model="whatsapp.template">
+            <field name="name">Promotional Offer</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_marketing"/>
+            <field name="content">Hi {name}! 🎉 Special offer just for you!
+
+{offer_description}
+
+Discount: {discount_percent}% OFF
+Code: {promo_code}
+Valid until: {expiry_date}
+
+Don't miss out on this amazing deal!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_new_product_announcement" model="whatsapp.template">
+            <field name="name">New Product Announcement</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_marketing"/>
+            <field name="content">Hi {name}! 🆕 We're excited to announce our latest product: {product_name}
+
+{product_description}
+
+Special Launch Price: {price}
+Available: {availability_date}
+
+Be among the first to get it!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Follow-up Templates -->
+        <record id="template_follow_up_inquiry" model="whatsapp.template">
+            <field name="name">Follow-up Inquiry</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_follow_up"/>
+            <field name="content">Hi {name}, I hope you're doing well! 😊
+
+I wanted to follow up on your inquiry about {product_service}. Do you have any questions I can help answer?
+
+I'm here to help make your decision easier.</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_follow_up_purchase" model="whatsapp.template">
+            <field name="name">Follow-up Purchase</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_follow_up"/>
+            <field name="content">Hi {name}, I hope you're enjoying your recent purchase! 😊
+
+How has your experience been with {product_name}? We'd love to hear your feedback.
+
+If you need any support or have questions, I'm here to help!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Seasonal Templates -->
+        <record id="template_holiday_greetings" model="whatsapp.template">
+            <field name="name">Holiday Greetings</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_seasonal"/>
+            <field name="content">Hi {name}! 🎄🎁 Wishing you and your family a wonderful holiday season!
+
+As a token of our appreciation, enjoy {discount_percent}% off your next purchase with code: {promo_code}
+
+Thank you for being a valued customer!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_birthday_wishes" model="whatsapp.template">
+            <field name="name">Birthday Wishes</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_seasonal"/>
+            <field name="content">Happy Birthday {name}! 🎉🎂
+
+Wishing you a fantastic day filled with joy and celebration!
+
+As a birthday gift, here's a special {discount_percent}% discount code: {promo_code}
+
+Enjoy your special day!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Auto-Reply Templates -->
+        <record id="template_auto_reply_business_hours" model="whatsapp.template">
+            <field name="name">Auto-Reply Business Hours</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_auto_reply"/>
+            <field name="content">Thank you for your message! 🙏
+
+We're currently outside business hours. Our team will respond to you during our next business day.
+
+Business Hours: {business_hours}
+
+For urgent matters, please call: {emergency_phone}</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_auto_reply_general" model="whatsapp.template">
+            <field name="name">Auto-Reply General</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_auto_reply"/>
+            <field name="content">Hi! Thanks for reaching out to {company_name}. 😊
+
+I've received your message and will get back to you as soon as possible.
+
+For immediate assistance, you can also:
+- Visit our website: {website}
+- Call us: {phone}</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <!-- Event Templates -->
+        <record id="template_event_invitation" model="whatsapp.template">
+            <field name="name">Event Invitation</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_event"/>
+            <field name="content">Hi {name}! 🎪 You're invited to our exclusive event!
+
+Event: {event_name}
+Date: {event_date}
+Time: {event_time}
+Location: {event_location}
+
+RSVP by {rsvp_date}. We can't wait to see you there!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        <record id="template_event_reminder" model="whatsapp.template">
+            <field name="name">Event Reminder</field>
+            <field name="template_type">text</field>
+            <field name="category_id" ref="whatsapp_template_category_event"/>
+            <field name="content">Hi {name}! 📅 Just a reminder about our upcoming event tomorrow:
+
+{event_name}
+Time: {event_time}
+Location: {event_location}
+
+Don't forget to bring: {what_to_bring}
+
+See you there!</field>
+            <field name="is_public">1</field>
+            <field name="active">1</field>
+        </record>
+        
+        
+        <!-- WhatsApp Server Configuration -->
+        <record id="ir_config_parameter_whatsapp_server_url" model="ir.config_parameter">
+            <field name="key">whatsapp.server_url</field>
+            <field name="value">http://localhost:3000</field>
+        </record>
+        
+        <record id="ir_config_parameter_whatsapp_server_token" model="ir.config_parameter">
+            <field name="key">whatsapp.server_token</field>
+            <field name="value">your-secret-token</field>
+        </record>
+        
+        <record id="ir_config_parameter_whatsapp_webhook_enabled" model="ir.config_parameter">
+            <field name="key">whatsapp.webhook_enabled</field>
+            <field name="value">1</field>
+        </record>
+        
+        <record id="ir_config_parameter_whatsapp_max_file_size" model="ir.config_parameter">
+            <field name="key">whatsapp.max_file_size</field>
+            <field name="value">52428800</field> <!-- 50MB -->
+        </record>
+        
+        <record id="ir_config_parameter_whatsapp_session_timeout" model="ir.config_parameter">
+            <field name="key">whatsapp.session_timeout</field>
+            <field name="value">3600</field> <!-- 1 hour -->
+        </record>
+        
+        <record id="ir_config_parameter_whatsapp_message_retry" model="ir.config_parameter">
+            <field name="key">whatsapp.message_retry</field>
+            <field name="value">3</field>
+        </record>
+        
+        <record id="ir_config_parameter_whatsapp_rate_limit" model="ir.config_parameter">
+            <field name="key">whatsapp.rate_limit</field>
+            <field name="value">10</field> <!-- Messages per minute -->
+        </record>
+        
+        <record id="ir_config_parameter_whatsapp_auto_sync" model="ir.config_parameter">
+            <field name="key">whatsapp.auto_sync</field>
+            <field name="value">1</field>
+        </record>
+        
+        <record id="ir_config_parameter_whatsapp_sync_interval" model="ir.config_parameter">
+            <field name="key">whatsapp.sync_interval</field>
+            <field name="value">300</field> <!-- 5 minutes -->
+        </record>
+        
+        <record id="ir_config_parameter_whatsapp_debug_mode" model="ir.config_parameter">
+            <field name="key">whatsapp.debug_mode</field>
+            <field name="value">0</field>
+        </record>
+        
+    </data>
+</odoo>

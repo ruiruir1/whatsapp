@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        
+        <!-- WhatsApp Group Add Member Wizard Form -->
+        <record id="whatsapp_group_add_member_wizard_form" model="ir.ui.view">
+            <field name="name">whatsapp.group.add.member.wizard.form</field>
+            <field name="model">whatsapp.group.add.member</field>
+            <field name="arch" type="xml">
+                <form string="Add Members to Group">
+                    <sheet>
+                        <group string="Group Information">
+                            <field name="group_id" readonly="1"/>
+                            <field name="group_name"/>
+                            <field name="group_member_count"/>
+                            <field name="account_id" invisible="1"/>
+                        </group>
+                        
+                        <group string="Add Members">
+                            <field name="add_method" widget="radio"/>
+                        </group>
+                        
+                        <group string="Select Members" invisible="add_method != 'contacts'">
+                            <field name="contact_ids" nolabel="1" widget="many2many_tags">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="phone_number"/>
+                                    <field name="status"/>
+                                    <field name="is_business"/>
+                                </list>
+                            </field>
+                        </group>
+                        
+                        <group string="Phone Numbers" invisible="add_method != 'numbers'">
+                            <field name="phone_numbers" nolabel="1" placeholder="Enter phone numbers (one per line):"/>
+                        </group>
+                        
+                        <group string="Select Partners" invisible="add_method != 'partners'">
+                            <field name="partner_ids" nolabel="1" widget="many2many_tags">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="whatsapp_number"/>
+                                    <field name="is_company"/>
+                                </list>
+                            </field>
+                        </group>
+                        
+                        <group string="Options">
+                            <field name="make_admin"/>
+                            <field name="send_welcome_message"/>
+                            <field name="welcome_message" invisible="not send_welcome_message" widget="text"/>
+                        </group>
+                        
+                        <group string="Results" invisible="not result_message">
+                            <group>
+                                <field name="success_count" readonly="1"/>
+                                <field name="error_count" readonly="1"/>
+                            </group>
+                            <field name="result_message" widget="text" readonly="1"/>
+                        </group>
+                    </sheet>
+                    
+                    <footer>
+                        <button name="action_add_members" type="object" string="Add Members" class="btn-primary" invisible="result_message"/>
+                        <button name="action_done" type="object" string="Done" class="btn-primary" invisible="not result_message"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Group Add Member Wizard Action -->
+        <record id="whatsapp_group_add_member_wizard_action" model="ir.actions.act_window">
+            <field name="name">Add Members to Group</field>
+            <field name="res_model">whatsapp.group.add.member</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="whatsapp_group_add_member_wizard_form"/>
+        </record>
+        
+        <!-- WhatsApp Group Create Group Wizard Form -->
+        <record id="whatsapp_group_create_wizard_form" model="ir.ui.view">
+            <field name="name">whatsapp.group.create.wizard.form</field>
+            <field name="model">whatsapp.group.create</field>
+            <field name="arch" type="xml">
+                <form string="Create WhatsApp Group">
+                    <sheet>
+                        <group string="Group Information">
+                            <field name="name" required="1"/>
+                            <field name="description" widget="text"/>
+                            <field name="account_id" required="1"/>
+                        </group>
+                        
+                        <group string="Initial Members">
+                            <field name="member_ids" nolabel="1" widget="many2many_tags">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="phone_number"/>
+                                    <field name="status"/>
+                                    <field name="is_business"/>
+                                </list>
+                            </field>
+                        </group>
+                        
+                        <group string="Options">
+                            <field name="make_members_admin"/>
+                        </group>
+                        
+                        <group string="Results" invisible="not group_id">
+                            <field name="group_id" readonly="1"/>
+                            <field name="result_message" widget="text" readonly="1"/>
+                        </group>
+                    </sheet>
+                    
+                    <footer>
+                        <button name="action_create_group" type="object" string="Create Group" class="btn-primary" invisible="group_id"/>
+                        <button name="action_view_group" type="object" string="View Group" class="btn-primary" invisible="not group_id"/>
+                        <button name="action_done" type="object" string="Done" class="btn-secondary" invisible="not group_id"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Group Create Group Wizard Action -->
+        <record id="whatsapp_group_create_wizard_action" model="ir.actions.act_window">
+            <field name="name">Create WhatsApp Group</field>
+            <field name="res_model">whatsapp.group.create</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="whatsapp_group_create_wizard_form"/>
+        </record>
+        
+    </data>
+</odoo>

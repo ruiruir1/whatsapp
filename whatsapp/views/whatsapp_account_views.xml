@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- WhatsApp Account Form View -->
+        <record id="whatsapp_account_view_form" model="ir.ui.view">
+            <field name="name">whatsapp.account.form</field>
+            <field name="model">whatsapp.account</field>
+            <field name="arch" type="xml">
+                <form string="WhatsApp Account">
+                    <header>
+                        <button name="action_connect" string="Connect" type="object" class="btn-primary" invisible="status not in ['disconnected', 'error']"/>
+                        <button name="action_disconnect" string="Disconnect" type="object" class="btn-secondary" invisible="status in ['disconnected', 'error']"/>
+                        <button name="action_restart" string="Restart" type="object" class="btn-secondary" invisible="status == 'disconnected'"/>
+                        <button name="action_get_qr_code" string="Get QR Code" type="object" class="btn-primary" invisible="status != 'qr_code'"/>
+                        <button name="sync_contacts" string="Sync Contacts" type="object" class="btn-secondary" invisible="status != 'ready'"/>
+                        <field name="status" widget="statusbar" statusbar_visible="disconnected,connecting,qr_code,authenticated,ready"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_dashboard" type="object" class="oe_stat_button" icon="fa-dashboard">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Dashboard</span>
+                                </div>
+                            </button>
+                            <button name="action_open_chat" type="object" class="oe_stat_button" icon="fa-comments">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Chat</span>
+                                </div>
+                            </button>
+                            <button name="%(whatsapp_message_action)d" type="action" class="oe_stat_button" icon="fa-envelope">
+                                <field name="messages_sent" widget="statinfo" string="Sent"/>
+                            </button>
+                            <button name="%(whatsapp_message_action)d" type="action" class="oe_stat_button" icon="fa-envelope-open">
+                                <field name="messages_received" widget="statinfo" string="Received"/>
+                            </button>
+                            <button name="%(whatsapp_contact_action)d" type="action" class="oe_stat_button" icon="fa-users">
+                                <field name="contacts_count" widget="statinfo" string="Contacts"/>
+                            </button>
+                            <button name="%(whatsapp_group_action)d" type="action" class="oe_stat_button" icon="fa-group">
+                                <field name="groups_count" widget="statinfo" string="Groups"/>
+                            </button>
+                        </div> 
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="WhatsApp Account Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="phone_number" required="1"/>
+                                <field name="country_code"/>
+                                <field name="display_name"/>
+                                <field name="about"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <field name="user_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="last_seen"/>
+                                <field name="process_status"/>
+                                <field name="process_id" invisible="process_id == 0"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Configuration">
+                                <group>
+                                    <group string="Auto Reply">
+                                        <field name="auto_reply"/>
+                                        <field name="auto_reply_message" invisible="not auto_reply"/>
+                                    </group>
+                                    <group string="API Settings">
+                                        <field name="api_endpoint"/>
+                                        <field name="api_key" password="True"/>
+                                        <field name="session_name" readonly="1"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Webhook">
+                                        <field name="webhook_url"/>
+                                        <field name="webhook_secret" password="True"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Authentication">
+                                <group>
+                                    <field name="qr_code" invisible="not qr_code"/>
+                                    <field name="qr_code_image" widget="image" invisible="not qr_code_image"/>
+                                </group>
+                            </page>
+                            <page string="Messages">
+                                <field name="message_ids" readonly="1">
+                                    <list>
+                                        <field name="timestamp"/>
+                                        <field name="direction"/>
+                                        <field name="from_number"/>
+                                        <field name="to_number"/>
+                                        <field name="message"/>
+                                        <field name="message_type"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Contacts">
+                                <field name="contact_ids" readonly="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="phone_number"/>
+                                        <field name="is_business"/>
+                                        <field name="last_seen"/>
+                                        <field name="message_count"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Groups">
+                                <field name="group_ids" readonly="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="member_count"/>
+                                        <field name="is_member"/>
+                                        <field name="is_admin"/>
+                                        <field name="last_activity"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Templates">
+                                <field name="template_ids" readonly="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="template_type"/>
+                                        <field name="language"/>
+                                        <field name="usage_count"/>
+                                        <field name="active"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <!-- WhatsApp Account Tree View -->
+        <record id="whatsapp_account_view_tree" model="ir.ui.view">
+            <field name="name">whatsapp.account.tree</field>
+            <field name="model">whatsapp.account</field>
+            <field name="arch" type="xml">
+                <list string="WhatsApp Accounts">
+                    <field name="name"/>
+                    <field name="phone_number"/>
+                    <field name="status" widget="badge" decoration-success="status == 'ready'" decoration-info="status == 'authenticated'" decoration-warning="status in ['connecting', 'qr_code']" decoration-danger="status in ['disconnected', 'error']"/>
+                    <field name="user_id"/>
+                    <field name="messages_sent"/>
+                    <field name="messages_received"/>
+                    <field name="contacts_count"/>
+                    <field name="groups_count"/>
+                    <field name="last_seen"/>
+                    <field name="active"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- WhatsApp Account Kanban View -->
+        <record id="whatsapp_account_view_kanban" model="ir.ui.view">
+            <field name="name">whatsapp.account.kanban</field>
+            <field name="model">whatsapp.account</field>
+            <field name="arch" type="xml">
+                <kanban string="WhatsApp Accounts">
+                    <field name="name"/>
+                    <field name="phone_number"/>
+                    <field name="status"/>
+                    <field name="messages_sent"/>
+                    <field name="messages_received"/>
+                    <field name="contacts_count"/>
+                    <field name="groups_count"/>
+                    <field name="last_seen"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                            <span class="o_kanban_record_subtitle">
+                                                <field name="phone_number"/>
+                                            </span>
+                                        </div>
+                                        <div class="o_kanban_record_top_right">
+                                            <field name="status" widget="label_selection" options="{'classes': {                                                        'ready': 'success',                                                        'authenticated': 'info',                                                        'connecting': 'warning',                                                        'qr_code': 'warning',                                                        'disconnected': 'danger',                                                        'error': 'danger'                                                    }}"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="o_kanban_record_bottom">
+                                            <div class="oe_kanban_bottom_left">
+                                                <span>
+                                                    <i class="fa fa-paper-plane" title="Messages Sent"/> 
+                                                    <field name="messages_sent"/>
+                                                </span>
+                                                <span>
+                                                    <i class="fa fa-envelope" title="Messages Received"/> 
+                                                    <field name="messages_received"/>
+                                                </span>
+                                            </div>
+                                            <div class="oe_kanban_bottom_right">
+                                                <span>
+                                                    <i class="fa fa-users" title="Contacts"/> 
+                                                    <field name="contacts_count"/>
+                                                </span>
+                                                <span>
+                                                    <i class="fa fa-group" title="Groups"/> 
+                                                    <field name="groups_count"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- WhatsApp Account Search View -->
+        <record id="whatsapp_account_view_search" model="ir.ui.view">
+            <field name="name">whatsapp.account.search</field>
+            <field name="model">whatsapp.account</field>
+            <field name="arch" type="xml">
+                <search string="WhatsApp Accounts">
+                    <field name="name"/>
+                    <field name="phone_number"/>
+                    <field name="user_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                    <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <filter name="ready" string="Ready" domain="[('status', '=', 'ready')]"/>
+                    <filter name="authenticated" string="Authenticated" domain="[('status', '=', 'authenticated')]"/>
+                    <filter name="connecting" string="Connecting" domain="[('status', '=', 'connecting')]"/>
+                    <filter name="qr_code" string="QR Code Required" domain="[('status', '=', 'qr_code')]"/>
+                    <filter name="disconnected" string="Disconnected" domain="[('status', '=', 'disconnected')]"/>
+                    <filter name="error" string="Error" domain="[('status', '=', 'error')]"/>
+                    <separator/>
+                    <filter name="my_accounts" string="My Accounts" domain="[('user_id', '=', uid)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_status" domain="[]" context="{'group_by': 'status'}"/>
+                        <filter string="User" name="group_user" domain="[]" context="{'group_by': 'user_id'}"/>
+                        <filter string="Company" name="group_company" domain="[]" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- WhatsApp Account Action -->
+        <record id="whatsapp_account_action" model="ir.actions.act_window">
+            <field name="name">WhatsApp Accounts</field>
+            <field name="res_model">whatsapp.account</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="search_view_id" ref="whatsapp_account_view_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first WhatsApp account
+                </p>
+                <p>
+                    Connect your WhatsApp account to start sending and receiving messages through Odoo.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

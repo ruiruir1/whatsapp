@@ -1,0 +1,26 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_whatsapp_account_manager,whatsapp.account manager,model_whatsapp_account,base.group_user,1,1,1,1
+access_whatsapp_account_user,whatsapp.account user,model_whatsapp_account,,1,1,1,0
+access_whatsapp_message_manager,whatsapp.message manager,model_whatsapp_message,base.group_user,1,1,1,1
+
+access_whatsapp_message_portal,whatsapp.message portal,model_whatsapp_message,base.group_portal,1,0,0,0
+access_whatsapp_contact_manager,whatsapp.contact manager,model_whatsapp_contact,base.group_user,1,1,1,1
+
+access_whatsapp_contact_portal,whatsapp.contact portal,model_whatsapp_contact,base.group_portal,1,0,0,0
+access_whatsapp_group_manager,whatsapp.group manager,model_whatsapp_group,base.group_user,1,1,1,1
+
+access_whatsapp_template_manager,whatsapp.template manager,model_whatsapp_template,base.group_user,1,1,1,1
+
+access_whatsapp_session_manager,whatsapp.session manager,model_whatsapp_session,base.group_user,1,1,1,1
+
+access_whatsapp_send_message_manager,whatsapp.send.message manager,model_whatsapp_send_message,base.group_user,1,1,1,1
+
+access_whatsapp_bulk_message_manager,whatsapp.bulk.message manager,model_whatsapp_bulk_message,base.group_user,1,1,1,1
+
+access_whatsapp_account_setup_manager,whatsapp.account.setup manager,model_whatsapp_account_setup,base.group_user,1,1,1,1
+
+access_whatsapp_contact_tag_manager,whatsapp.contact.tag manager,model_whatsapp_contact_tag,base.group_user,1,1,1,1
+
+access_whatsapp_template_category_manager,whatsapp.template.category manager,model_whatsapp_template_category,base.group_user,1,1,1,1
+
+access_whatsapp_import_contacts_manager,whatsapp.import.contacts manager,model_whatsapp_import_contacts,base.group_user,1,1,1,1

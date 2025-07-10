@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    
+    <!-- WhatsApp Chat Window Template -->
+    <t t-name="whatsapp.ChatWindow" owl="1">
+        <div class="whatsapp-chat-window">
+            <!-- Chat Header -->
+            <div class="whatsapp-chat-header">
+                <div class="d-flex align-items-center">
+                    <div class="whatsapp-avatar me-3">
+                        <t t-if="state.activeChat and state.activeChat.type === 'contact'">
+                            <img t-if="state.activeChat.data.profile_pic_url" 
+                                 t-att-src="state.activeChat.data.profile_pic_url" 
+                                 class="rounded-circle" width="40" height="40" alt="Avatar"/>
+                            <div t-else="" class="whatsapp-avatar-placeholder">
+                                <i class="fa fa-user"></i>
+                            </div>
+                        </t>
+                        <t t-if="state.activeChat and state.activeChat.type === 'group'">
+                            <div class="whatsapp-avatar-placeholder">
+                                <i class="fa fa-group"></i>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="mb-0" t-if="state.activeChat">
+                            <t t-esc="state.activeChat.data.name"/>
+                        </h5>
+                        <small class="text-muted" t-if="state.activeChat and state.activeChat.type === 'contact'">
+                            <t t-esc="state.activeChat.data.phone_number"/>
+                        </small>
+                        <small class="text-muted" t-if="state.activeChat and state.activeChat.type === 'group'">
+                            <t t-esc="state.activeChat.data.member_count"/> members
+                        </small>
+                    </div>
+                    <div class="whatsapp-chat-actions">
+                        <button class="btn btn-sm btn-outline-secondary me-2" title="Video Call">
+                            <i class="fa fa-video"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary me-2" title="Voice Call">
+                            <i class="fa fa-phone"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" title="More Options">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Body -->
+            <div class="whatsapp-chat-body d-flex" style="height: 600px;">
+                <!-- Chat List -->
+                <div class="whatsapp-chat-list">
+                    <div class="whatsapp-chat-list-header">
+                        <h6 class="mb-0">Chats</h6>
+                    </div>
+                    
+                    <!-- Search -->
+                    <div class="whatsapp-search">
+                        <input type="text" class="form-control form-control-sm" placeholder="Search chats..."/>
+                    </div>
+                    
+                    <!-- Contacts -->
+                    <div class="whatsapp-contacts">
+                        <h6 class="whatsapp-section-title">Contacts</h6>
+                        <t t-foreach="state.contacts" t-as="contact" t-key="contact.id">
+                            <div class="whatsapp-chat-item" 
+                                 t-att-class="state.activeChat and state.activeChat.type === 'contact' and state.activeChat.data.id === contact.id ? 'active' : ''"
+                                 t-on-click="() => this.selectChat({type: 'contact', data: contact})">
+                                <div class="whatsapp-avatar me-3">
+                                    <img t-if="contact.profile_pic_url" 
+                                         t-att-src="contact.profile_pic_url" 
+                                         class="rounded-circle" width="35" height="35" alt="Avatar"/>
+                                    <div t-else="" class="whatsapp-avatar-placeholder-sm">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-0">
+                                            <t t-esc="contact.name"/>
+                                        </h6>
+                                        <small class="text-muted">
+                                            <t t-if="contact.last_seen">
+                                                <t t-esc="formatMessageTime(contact.last_seen)"/>
+                                            </t>
+                                        </small>
+                                    </div>
+                                    <small class="text-muted">
+                                        <t t-esc="contact.phone_number"/>
+                                    </small>
+                                </div>
+                                <div class="whatsapp-message-count" t-if="contact.message_count > 0">
+                                    <span class="badge bg-success">
+                                        <t t-esc="contact.message_count"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                    
+                    <!-- Groups -->
+                    <div class="whatsapp-groups">
+                        <h6 class="whatsapp-section-title">Groups</h6>
+                        <t t-foreach="state.groups" t-as="group" t-key="group.id">
+                            <div class="whatsapp-chat-item" 
+                                 t-att-class="state.activeChat and state.activeChat.type === 'group' and state.activeChat.data.id === group.id ? 'active' : ''"
+                                 t-on-click="() => this.selectChat({type: 'group', data: group})">
+                                <div class="whatsapp-avatar me-3">
+                                    <div class="whatsapp-avatar-placeholder-sm">
+                                        <i class="fa fa-group"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-0">
+                                            <t t-esc="group.name"/>
+                                        </h6>
+                                        <small class="text-muted">
+                                            <t t-if="group.last_activity">
+                                                <t t-esc="formatMessageTime(group.last_activity)"/>
+                                            </t>
+                                        </small>
+                                    </div>
+                                    <small class="text-muted">
+                                        <t t-esc="group.member_count"/> members
+                                    </small>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                
+                <!-- Messages Area -->
+                <div class="whatsapp-messages-area flex-grow-1">
+                    <t t-if="!state.activeChat">
+                        <div class="whatsapp-welcome">
+                            <div class="text-center">
+                                <i class="fa fa-whatsapp whatsapp-logo"></i>
+                                <h3>WhatsApp Web</h3>
+                                <p class="text-muted">Select a chat to start messaging</p>
+                            </div>
+                        </div>
+                    </t>
+                    
+                    <t t-if="state.activeChat">
+                        <!-- Messages Container -->
+                        <div class="whatsapp-messages-container" t-ref="chatContainer">
+                            <t t-if="state.isLoading">
+                                <div class="text-center py-3">
+                                    <i class="fa fa-spinner fa-spin"></i>
+                                    Loading messages...
+                                </div>
+                            </t>
+                            
+                            <t t-foreach="state.messages" t-as="message" t-key="message.id">
+                                <div class="whatsapp-message" 
+                                     t-att-class="message.direction === 'outgoing' ? 'outgoing' : 'incoming'">
+                                    <div class="whatsapp-message-bubble">
+                                        <div class="whatsapp-message-header" t-if="message.direction === 'incoming'">
+                                            <span class="whatsapp-sender-name">
+                                                <t t-esc="message.from_name or message.from_number"/>
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="whatsapp-message-content">
+                                            <t t-if="message.message_type === 'text'">
+                                                <div class="whatsapp-message-text">
+                                                    <t t-esc="message.message"/>
+                                                </div>
+                                            </t>
+                                            
+                                            <t t-if="message.message_type === 'image'">
+                                                <div class="whatsapp-message-media">
+                                                    <img t-if="message.media_url" 
+                                                         t-att-src="message.media_url" 
+                                                         class="whatsapp-message-image" alt="Image"/>
+                                                    <div class="whatsapp-message-text" t-if="message.message">
+                                                        <t t-esc="message.message"/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            
+                                            <t t-if="message.message_type === 'document'">
+                                                <div class="whatsapp-message-document">
+                                                    <i class="fa fa-file me-2"></i>
+                                                    <span>Document</span>
+                                                </div>
+                                            </t>
+                                            
+                                            <t t-if="message.message_type === 'voice'">
+                                                <div class="whatsapp-message-voice">
+                                                    <i class="fa fa-microphone me-2"></i>
+                                                    <span>Voice message</span>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        
+                                        <div class="whatsapp-message-footer">
+                                            <span class="whatsapp-message-time">
+                                                <t t-esc="formatMessageTime(message.timestamp)"/>
+                                            </span>
+                                            <span class="whatsapp-message-status" t-if="message.direction === 'outgoing'">
+                                                <i t-att-class="'fa ' + getMessageStatusIcon(message.status)"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        
+                        <!-- Message Input -->
+                        <div class="whatsapp-message-input">
+                            <div class="input-group">
+                                <button class="btn btn-outline-secondary" type="button" t-on-click="toggleEmojiPicker">
+                                    <i class="fa fa-smile-o"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" type="button" t-on-click="triggerFileInput">
+                                    <i class="fa fa-paperclip"></i>
+                                </button>
+                                <input type="file" class="d-none" t-ref="fileInput" t-on-change="onFileUpload"/>
+                                
+                                <div class="flex-grow-1 position-relative">
+                                    <textarea class="form-control" 
+                                              placeholder="Type a message..."
+                                              t-ref="messageInput"
+                                              t-model="state.newMessage"
+                                              t-on-keydown="onMessageInput"
+                                              rows="1"
+                                              style="resize: none; max-height: 120px;"></textarea>
+                                    
+                                    <!-- Attachment Preview -->
+                                    <div class="whatsapp-attachment-preview" t-if="state.attachment">
+                                        <div class="alert alert-info d-flex align-items-center">
+                                            <i t-att-class="'fa ' + getAttachmentIcon() + ' me-2'"></i>
+                                            <span class="flex-grow-1">
+                                                <t t-esc="state.attachment.name"/>
+                                            </span>
+                                            <button class="btn btn-sm btn-outline-secondary" t-on-click="removeAttachment">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-primary" type="button" t-on-click="sendMessage">
+                                    <i class="fa fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Emoji Picker -->
+                            <div class="whatsapp-emoji-picker" t-if="state.showEmojiPicker">
+                                <div class="whatsapp-emoji-grid">
+                                    <t t-foreach="COMMON_EMOJIS" t-as="emoji" t-key="emoji">
+                                        <button class="whatsapp-emoji-btn" t-on-click="() => this.insertEmoji(emoji)">
+                                            <t t-esc="emoji"/>
+                                        </button>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+    <!-- WhatsApp Message Composer Template -->
+    <t t-name="whatsapp.MessageComposer" owl="1">
+        <div class="whatsapp-message-composer">
+            <div class="whatsapp-composer-actions">
+                <button class="btn btn-sm btn-outline-secondary" t-on-click="toggleEmojiPicker" title="Emoji">
+                    <i class="fa fa-smile-o"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" t-on-click="triggerFileInput" title="Attach File">
+                    <i class="fa fa-paperclip"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" t-on-click="toggleTemplates" title="Templates">
+                    <i class="fa fa-file-text-o"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" 
+                        t-on-mousedown="startVoiceRecording" 
+                        t-on-mouseup="stopVoiceRecording"
+                        t-on-mouseleave="stopVoiceRecording"
+                        title="Voice Message">
+                    <i class="fa fa-microphone"></i>
+                </button>
+            </div>
+            
+            <div class="whatsapp-composer-main">
+                <!-- Voice Recording -->
+                <div class="whatsapp-voice-recording" t-if="state.isRecording">
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-microphone text-danger me-2"></i>
+                        <span class="text-danger">Recording...</span>
+                        <span class="ms-2">
+                            <t t-esc="formatRecordingTime(state.recordingTime)"/>
+                        </span>
+                        <button class="btn btn-sm btn-outline-danger ms-auto" t-on-click="cancelVoiceRecording">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Text Input -->
+                <div class="whatsapp-composer-input" t-if="!state.isRecording">
+                    <textarea class="form-control" 
+                              placeholder="Type a message..."
+                              t-ref="textArea"
+                              t-model="state.message"
+                              t-on-input="onMessageInput"
+                              t-on-keydown="onKeyDown"
+                              t-on-dragover="onDragOver"
+                              t-on-drop="onDrop"
+                              rows="1"
+                              style="resize: none;"></textarea>
+                </div>
+                
+                <!-- Attachment Preview -->
+                <div class="whatsapp-attachment-preview" t-if="state.attachment or state.recordingBlob">
+                    <div class="alert alert-info d-flex align-items-center">
+                        <i t-att-class="'fa ' + getAttachmentIcon() + ' me-2'"></i>
+                        <span class="flex-grow-1">
+                            <t t-esc="getAttachmentName()"/>
+                        </span>
+                        <button class="btn btn-sm btn-outline-secondary" t-on-click="removeAttachment">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="whatsapp-composer-send">
+                <button class="btn btn-primary" t-on-click="sendMessage">
+                    <i class="fa fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <!-- Hidden File Input -->
+            <input type="file" class="d-none" t-ref="fileInput" t-on-change="onFileSelect"/>
+            
+            <!-- Emoji Picker -->
+            <div class="whatsapp-emoji-picker" t-if="state.showEmojiPicker">
+                <div class="whatsapp-emoji-grid">
+                    <t t-foreach="COMMON_EMOJIS" t-as="emoji" t-key="emoji">
+                        <button class="whatsapp-emoji-btn" t-on-click="() => this.insertEmoji(emoji)">
+                            <t t-esc="emoji"/>
+                        </button>
+                    </t>
+                </div>
+            </div>
+            
+            <!-- Templates -->
+            <div class="whatsapp-templates" t-if="state.showTemplates">
+                <div class="whatsapp-templates-header">
+                    <h6>Message Templates</h6>
+                </div>
+                <div class="whatsapp-templates-list">
+                    <t t-foreach="state.templates" t-as="template" t-key="template.id">
+                        <div class="whatsapp-template-item" t-on-click="() => this.selectTemplate(template)">
+                            <div class="whatsapp-template-name">
+                                <t t-esc="template.name"/>
+                            </div>
+                            <div class="whatsapp-template-content">
+                                <t t-esc="template.content"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+</templates>

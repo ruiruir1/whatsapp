@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <!-- WhatsApp Dashboard View -->
+        <record id="whatsapp_dashboard_view" model="ir.ui.view">
+            <field name="name">whatsapp.dashboard</field>
+            <field name="model">whatsapp.account</field>
+            <field name="arch" type="xml">
+                <form string="WhatsApp Dashboard">
+                    <sheet class="whatsapp-dashboard">
+                        <div class="o_form_sheet_bg">
+                            <div class="clearfix">
+                                <h1 class="o_form_title">WhatsApp Dashboard</h1>
+                            </div>
+                            
+                            <!-- Account Status Cards -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="whatsapp-stats-card">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="whatsapp-stat-number">0</div>
+                                                <div class="whatsapp-stat-label">Active Accounts</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="whatsapp-stat-icon">
+                                                    <i class="fa fa-whatsapp"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="whatsapp-stats-card">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="whatsapp-stat-number">0</div>
+                                                <div class="whatsapp-stat-label">Messages Today</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="whatsapp-stat-icon">
+                                                    <i class="fa fa-comments"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="whatsapp-stats-card">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="whatsapp-stat-number">0</div>
+                                                <div class="whatsapp-stat-label">Total Contacts</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="whatsapp-stat-icon">
+                                                    <i class="fa fa-users"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3">
+                                    <div class="whatsapp-stats-card">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="whatsapp-stat-number">0</div>
+                                                <div class="whatsapp-stat-label">Total Groups</div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="whatsapp-stat-icon">
+                                                    <i class="fa fa-group"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Quick Actions -->
+                            <div class="row mt-4">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3>Quick Actions</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Recent Activity -->
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3>Recent Messages</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-sm">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Time</th>
+                                                            <th>From</th>
+                                                            <th>Message</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="4" class="text-center text-muted">No recent messages</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3>Account Status</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="list-group">
+                                                <div class="list-group-item">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span>No accounts configured</span>
+                                                        <span class="badge badge-secondary">0</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Dashboard Action -->
+        <record id="whatsapp_dashboard_action" model="ir.actions.act_window">
+            <field name="name">WhatsApp Dashboard</field>
+            <field name="res_model">whatsapp.account</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="whatsapp_dashboard_view"/>
+            <field name="target">current</field>
+        </record>
+        
+        <!-- Update Dashboard Menu -->
+        <record id="whatsapp_dashboard_menu" model="ir.ui.menu">
+            <field name="action" ref="whatsapp_dashboard_action"/>
+        </record>
+        
+    </data>
+</odoo>

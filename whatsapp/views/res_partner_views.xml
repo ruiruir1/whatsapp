@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <!-- Extend Partner Form View -->
+        <record id="res_partner_view_form_whatsapp" model="ir.ui.view">
+            <field name="name">res.partner.form.whatsapp</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_button_box']" position="inside">
+                    <button name="action_view_whatsapp_messages" type="object" class="oe_stat_button" icon="fa-whatsapp"
+                            invisible="whatsapp_message_count == 0">
+                        <field name="whatsapp_message_count" widget="statinfo" string="WhatsApp Messages"/>
+                    </button>
+                    <button name="action_send_whatsapp_message" type="object" class="oe_stat_button" icon="fa-paper-plane"
+                            invisible="whatsapp_number == False">
+                        <div class="o_stat_info">
+                            <span class="o_stat_text">Send WhatsApp</span>
+                        </div>
+                    </button>
+                </xpath>
+                
+                <xpath expr="//field[@name='phone']" position="after">
+                    <field name="whatsapp_number" widget="phone" options="{'enable_sms': false}"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='website']" position="after">
+                    <field name="whatsapp_name" readonly="1"/>
+                </xpath>
+                
+                <notebook position="inside">
+                    <page string="WhatsApp" invisible="whatsapp_number == False">
+                        <group>
+                            <group string="WhatsApp Information">
+                                <field name="whatsapp_number"/>
+                                <field name="whatsapp_name"/>
+                                <field name="whatsapp_about"/>
+                                <field name="whatsapp_is_business"/>
+                                <field name="whatsapp_is_blocked"/>
+                                <field name="whatsapp_last_seen"/>
+                            </group>
+                            <group string="Profile">
+                                <field name="whatsapp_profile_pic" widget="image" class="oe_avatar"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Actions">
+                            <button name="action_sync_whatsapp_info" type="object" string="Sync WhatsApp Info" class="btn-primary"/>
+                            <button name="action_create_whatsapp_contact" type="object" string="Create WhatsApp Contact" class="btn-secondary"/>
+                        </group>
+                        
+                        <group string="WhatsApp Contacts">
+                            <field name="whatsapp_contact_ids" nolabel="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="phone_number"/>
+                                    <field name="account_id"/>
+                                    <field name="status"/>
+                                    <field name="last_seen"/>
+                                    <field name="message_count"/>
+                                </list>
+                            </field>
+                        </group>
+                        
+                        <group string="Recent Messages">
+                            <field name="whatsapp_message_ids" nolabel="1" limit="10">
+                                <list>
+                                    <field name="timestamp"/>
+                                    <field name="direction"/>
+                                    <field name="message_type"/>
+                                    <field name="message"/>
+                                    <field name="status"/>
+                                    <field name="account_id"/>
+                                </list>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        
+        <!-- Extend Partner Tree View -->
+        <record id="res_partner_view_tree_whatsapp" model="ir.ui.view">
+            <field name="name">res.partner.tree.whatsapp</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='phone']" position="after">
+                    <field name="whatsapp_number" optional="hide"/>
+                </xpath>
+                
+                <xpath expr="//list" position="attributes">
+                    <attribute name="multi_edit">1</attribute>
+                </xpath>
+                <xpath expr="//list" position="inside">
+                    <button name="action_send_whatsapp_message" type="object" title="Send WhatsApp Message" icon="fa-whatsapp"
+                            invisible="whatsapp_number == False"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Extend Partner Search View -->
+        <record id="res_partner_view_search_whatsapp" model="ir.ui.view">
+            <field name="name">res.partner.search.whatsapp</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="whatsapp_number"/>
+                </xpath>
+                
+                <xpath expr="//filter[@name='type_company']" position="after">
+                    <separator/>
+                    <filter string="Has WhatsApp" name="has_whatsapp" domain="[('whatsapp_number', '!=', False)]"/>
+                    <filter string="WhatsApp Business" name="whatsapp_business" domain="[('whatsapp_is_business', '=', True)]"/>
+                    <filter string="WhatsApp Blocked" name="whatsapp_blocked" domain="[('whatsapp_is_blocked', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

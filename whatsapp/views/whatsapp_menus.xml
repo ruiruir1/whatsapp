@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <!-- WhatsApp Main Menu -->
+        <menuitem id="whatsapp_main_menu" name="WhatsApp" sequence="50" web_icon="whatsapp,static/description/icon.png"/>
+        
+        <!-- Dashboard Menu -->
+        <menuitem id="whatsapp_dashboard_menu" name="Dashboard" parent="whatsapp_main_menu" sequence="10"/>
+        
+        <!-- Accounts Menu -->
+        <menuitem id="whatsapp_accounts_menu" name="Accounts" parent="whatsapp_main_menu" sequence="20" action="whatsapp_account_action"/>
+        
+        <!-- Messages Menu -->
+        <menuitem id="whatsapp_messages_menu" name="Messages" parent="whatsapp_main_menu" sequence="30"/>
+        <menuitem id="whatsapp_all_messages_menu" name="All Messages" parent="whatsapp_messages_menu" sequence="10" action="whatsapp_message_action"/>
+        <menuitem id="whatsapp_send_message_menu" name="Send Message" parent="whatsapp_messages_menu" sequence="20" action="whatsapp_send_message_wizard_action"/>
+        <menuitem id="whatsapp_bulk_message_menu" name="Bulk Messages" parent="whatsapp_messages_menu" sequence="30" action="whatsapp_bulk_message_wizard_action"/>
+        <menuitem id="whatsapp_templates_menu" name="Templates" parent="whatsapp_messages_menu" sequence="40" action="whatsapp_template_action"/>
+        
+        <!-- Contacts Menu -->
+        <menuitem id="whatsapp_contacts_menu" name="Contacts" parent="whatsapp_main_menu" sequence="40"/>
+        <menuitem id="whatsapp_all_contacts_menu" name="All Contacts" parent="whatsapp_contacts_menu" sequence="10" action="whatsapp_contact_action"/>
+        <menuitem id="whatsapp_import_contacts_menu" name="Import Contacts" parent="whatsapp_contacts_menu" sequence="20" action="whatsapp_import_contacts_wizard_action"/>
+        
+        <!-- Groups Menu -->
+        <menuitem id="whatsapp_groups_menu" name="Groups" parent="whatsapp_main_menu" sequence="50"/>
+        <menuitem id="whatsapp_all_groups_menu" name="All Groups" parent="whatsapp_groups_menu" sequence="10" action="whatsapp_group_action"/>
+        <menuitem id="whatsapp_create_group_menu" name="Create Group" parent="whatsapp_groups_menu" sequence="20" action="whatsapp_group_create_wizard_action"/>
+        
+        <!-- Chat Menu -->
+        <menuitem id="whatsapp_chat_menu" name="Chat" parent="whatsapp_main_menu" sequence="60"/>
+        
+        <!-- Tools Menu -->
+        <menuitem id="whatsapp_tools_menu" name="Tools" parent="whatsapp_main_menu" sequence="70"/>
+        <menuitem id="whatsapp_export_messages_menu" name="Export Messages" parent="whatsapp_tools_menu" sequence="10" action="whatsapp_export_messages_wizard_action"/>
+        
+        <!-- Configuration Menu -->
+        <menuitem id="whatsapp_config_menu" name="Configuration" parent="whatsapp_main_menu" sequence="80" groups="base.group_system"/>
+        <menuitem id="whatsapp_settings_menu" name="Settings" parent="whatsapp_config_menu" sequence="10"/>
+        
+        <!-- Add WhatsApp to Communication menu -->
+        <menuitem id="whatsapp_communication_menu" name="WhatsApp" parent="mail.menu_root_discuss" sequence="30" action="whatsapp_account_action"/>
+        
+        <!-- Add WhatsApp to CRM menu -->
+        <menuitem id="whatsapp_crm_menu" name="WhatsApp" parent="crm.crm_menu_root" sequence="90" action="whatsapp_send_message_wizard_action" groups="crm.group_use_lead"/>
+        
+        <!-- Add WhatsApp to Sales menu -->
+        <menuitem id="whatsapp_sales_menu" name="WhatsApp" parent="sale.sale_menu_root" sequence="90" action="whatsapp_send_message_wizard_action" groups="sales_team.group_sale_salesman"/>
+        
+    </data>
+</odoo>

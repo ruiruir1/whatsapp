@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <!-- Extend General Settings View -->
+        <record id="res_config_settings_view_form_whatsapp" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.whatsapp</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <div class="app_settings_block" data-string="WhatsApp" string="WhatsApp" data-key="whatsapp">
+                        <h2>WhatsApp Integration</h2>
+                        
+                        <!-- Basic Settings -->
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_enabled"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_enabled" string="Enable WhatsApp Integration"/>
+                                    <div class="text-muted">
+                                        Allow users to send and receive WhatsApp messages
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-lg-6 o_setting_box" invisible="whatsapp_enabled == False">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_default_account_id" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_default_account_id" string="Default WhatsApp Account"/>
+                                    <div class="text-muted">
+                                        Default account for sending WhatsApp messages
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Server Settings -->
+                        <h3>Server Configuration</h3>
+                        <div class="row mt16 o_settings_container" invisible="whatsapp_enabled == False">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_server_url"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_server_url" string="WhatsApp Server URL"/>
+                                    <div class="text-muted">
+                                        URL of the WhatsApp server (e.g., http://localhost:3000)
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_server_token" password="True"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_server_token" string="Server Token"/>
+                                    <div class="text-muted">
+                                        Authentication token for the WhatsApp server
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Auto Reply Settings -->
+                        <h3>Auto Reply</h3>
+                        <div class="row mt16 o_settings_container" invisible="whatsapp_enabled == False">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_auto_reply_enabled"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_auto_reply_enabled" string="Enable Auto Reply"/>
+                                    <div class="text-muted">
+                                        Automatically reply to incoming messages
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 o_setting_box" invisible="whatsapp_auto_reply_enabled == False">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_auto_reply_message" widget="text"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_auto_reply_message" string="Auto Reply Message"/>
+                                    <div class="text-muted">
+                                        Message to send automatically when receiving new messages
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- CRM Integration -->
+                        <h3>CRM Integration</h3>
+                        <div class="row mt16 o_settings_container" invisible="whatsapp_enabled == False">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_create_lead_from_message"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_create_lead_from_message" string="Create Lead from Messages"/>
+                                    <div class="text-muted">
+                                        Automatically create CRM leads from WhatsApp messages
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-lg-6 o_setting_box" invisible="whatsapp_create_lead_from_message == False">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_lead_source_id" options="{'no_create': True, 'no_open': True}"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_lead_source_id" string="Lead Source"/>
+                                    <div class="text-muted">
+                                        Source to assign to leads created from WhatsApp
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Notification Settings -->
+                        <h3>Notifications</h3>
+                        <div class="row mt16 o_settings_container" invisible="whatsapp_enabled == False">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_notification_enabled"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_notification_enabled" string="Enable Notifications"/>
+                                    <div class="text-muted">
+                                        Show notifications for WhatsApp messages
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-lg-6 o_setting_box" invisible="whatsapp_notification_enabled == False">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_notification_sound"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_notification_sound" string="Notification Sound"/>
+                                    <div class="text-muted">
+                                        Play sound when receiving messages
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Message Settings -->
+                        <h3>Message Settings</h3>
+                        <div class="row mt16 o_settings_container" invisible="whatsapp_enabled == False">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_message_retention_days"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_message_retention_days" string="Message Retention (Days)"/>
+                                    <div class="text-muted">
+                                        Number of days to keep WhatsApp messages (0 = forever)
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_max_file_size"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_max_file_size" string="Max File Size (MB)"/>
+                                    <div class="text-muted">
+                                        Maximum file size for WhatsApp attachments
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Webhook Settings -->
+                        <h3>Webhook Settings</h3>
+                        <div class="row mt16 o_settings_container" invisible="whatsapp_enabled == False">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_webhook_enabled"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_webhook_enabled" string="Enable Webhooks"/>
+                                    <div class="text-muted">
+                                        Allow WhatsApp server to send webhooks
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-lg-6 o_setting_box" invisible="whatsapp_webhook_enabled == False">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_webhook_secret" password="True"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_webhook_secret" string="Webhook Secret"/>
+                                    <div class="text-muted">
+                                        Secret key for webhook authentication
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Advanced Settings -->
+                        <h3>Advanced Settings</h3>
+                        <div class="row mt16 o_settings_container" invisible="whatsapp_enabled == False">
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_rate_limit"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_rate_limit" string="Rate Limit (messages/minute)"/>
+                                    <div class="text-muted">
+                                        Maximum messages per minute per account
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 col-lg-6 o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="whatsapp_debug_mode"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="whatsapp_debug_mode" string="Debug Mode"/>
+                                    <div class="text-muted">
+                                        Enable debug logging for WhatsApp
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="row mt16 o_settings_container" invisible="whatsapp_enabled == False">
+                            <div class="col-12">
+                                <button name="action_test_whatsapp_connection" type="object" string="Test Connection" class="btn-primary"/>
+                                <button name="action_cleanup_old_messages" type="object" string="Cleanup Old Messages" class="btn-secondary"/>
+                                <button name="action_setup_whatsapp_lead_source" type="object" string="Setup Lead Source" class="btn-secondary"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

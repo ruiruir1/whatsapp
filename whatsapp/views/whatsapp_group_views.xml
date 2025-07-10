@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        
+        <!-- WhatsApp Group Tree View -->
+        <record id="whatsapp_group_tree" model="ir.ui.view">
+            <field name="name">whatsapp.group.tree</field>
+            <field name="model">whatsapp.group</field>
+            <field name="arch" type="xml">
+                <list string="WhatsApp Groups" decoration-success="is_member == True" decoration-warning="is_member == False">
+                    <field name="name"/>
+                    <field name="group_id"/>
+                    <field name="member_count"/>
+                    <field name="is_member"/>
+                    <field name="is_admin"/>
+                    <field name="last_activity"/>
+                    <field name="account_id"/>
+                    <field name="status"/>
+                    <button name="action_send_message" type="object" title="Send Message" icon="fa-paper-plane" invisible="not is_member"/>
+                    <button name="action_leave_group" type="object" title="Leave Group" icon="fa-sign-out" invisible="not is_member"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Group Form View -->
+        <record id="whatsapp_group_form" model="ir.ui.view">
+            <field name="name">whatsapp.group.form</field>
+            <field name="model">whatsapp.group</field>
+            <field name="arch" type="xml">
+                <form string="WhatsApp Group">
+                    <header>
+                        <button name="action_send_message" type="object" string="Send Message" class="btn-primary" invisible="not is_member"/>
+                        <!-- <button name="action_sync_group" type="object" string="Sync" class="btn-secondary"/> -->
+                        <button name="action_leave_group" type="object" string="Leave Group" class="btn-secondary" invisible="not is_member"/>
+                        <field name="status" widget="statusbar"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_messages" type="object" class="oe_stat_button" icon="fa-comments">
+                                <field name="message_count" widget="statinfo" string="Messages"/>
+                            </button>
+                            <!-- <button name="action_view_members" type="object" class="oe_stat_button" icon="fa-users">
+                                <field name="member_count" widget="statinfo" string="Members"/>
+                            </button> -->
+                        </div>
+                        
+                        <widget name="web_ribbon" title="Not Member" bg_color="bg-warning" invisible="is_member"/>
+                        <widget name="web_ribbon" title="Admin" bg_color="bg-success" invisible="not is_admin"/>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Group Name"/>
+                            </h1>
+                            <h2>
+                                <field name="group_id" placeholder="Group ID"/>
+                            </h2>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="account_id" readonly="1"/>
+                                <field name="wa_group_id" readonly="1"/>
+                                <!-- <field name="created_at" readonly="1"/> -->
+                                <!-- <field name="created_by" readonly="1"/> -->
+                            </group>
+                            <group>
+                                <field name="is_member" readonly="1"/>
+                                <field name="is_admin" readonly="1"/>
+                                <field name="last_activity" readonly="1"/>
+                                <field name="description" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Messages">
+                                <field name="message_ids" readonly="1">
+                                    <list>
+                                        <field name="timestamp"/>
+                                        <field name="direction"/>
+                                        <field name="from_name"/>
+                                        <field name="message_type"/>
+                                        <field name="message"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </page>
+                            
+                            <page string="Members">
+                                <field name="member_ids" readonly="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="phone_number"/>
+                                        <field name="is_admin"/>
+                                        <!-- <field name="joined_at"/> -->
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Group Search View -->
+        <record id="whatsapp_group_search" model="ir.ui.view">
+            <field name="name">whatsapp.group.search</field>
+            <field name="model">whatsapp.group</field>
+            <field name="arch" type="xml">
+                <search string="WhatsApp Groups">
+                    <field name="name"/>
+                    <field name="group_id"/>
+                    <field name="account_id"/>
+                    <!-- <field name="created_by"/> -->
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('status', '=', 'active')]"/>
+                    <filter string="Inactive" name="inactive" domain="[('status', '=', 'inactive')]"/>
+                    <separator/>
+                    <filter string="Member" name="member" domain="[('is_member', '=', True)]"/>
+                    <filter string="Not Member" name="not_member" domain="[('is_member', '=', False)]"/>
+                    <separator/>
+                    <filter string="Admin" name="admin" domain="[('is_admin', '=', True)]"/>
+                    <filter string="Not Admin" name="not_admin" domain="[('is_admin', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Account" name="group_account" domain="[]" context="{'group_by': 'account_id'}"/>
+                        <filter string="Status" name="group_status" domain="[]" context="{'group_by': 'status'}"/>
+                        <filter string="Member" name="group_member" domain="[]" context="{'group_by': 'is_member'}"/>
+                        <filter string="Admin" name="group_admin" domain="[]" context="{'group_by': 'is_admin'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Group Action -->
+        <record id="whatsapp_group_action" model="ir.actions.act_window">
+            <field name="name">WhatsApp Groups</field>
+            <field name="res_model">whatsapp.group</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="whatsapp_group_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No groups yet
+                </p>
+                <p>
+                    Groups will appear here after you sync with WhatsApp or join groups.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

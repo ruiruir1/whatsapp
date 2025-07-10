@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- WhatsApp Message Queue Processing -->
+        <record id="ir_cron_whatsapp_process_message_queue" model="ir.cron">
+            <field name="name">WhatsApp: Process Message Queue</field>
+            <field name="model_id" ref="model_whatsapp_message"/>
+            <field name="state">code</field>
+            <field name="code">model.process_message_queue()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Account Status Check -->
+        <record id="ir_cron_whatsapp_check_account_status" model="ir.cron">
+            <field name="name">WhatsApp: Check Account Status</field>
+            <field name="model_id" ref="model_whatsapp_account"/>
+            <field name="state">code</field>
+            <field name="code">model.check_account_status()</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Contact Sync -->
+        <record id="ir_cron_whatsapp_sync_contacts" model="ir.cron">
+            <field name="name">WhatsApp: Sync Contacts</field>
+            <field name="model_id" ref="model_whatsapp_account"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_sync_contacts()</field>
+            <field name="interval_number">30</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Group Sync -->
+        <record id="ir_cron_whatsapp_sync_groups" model="ir.cron">
+            <field name="name">WhatsApp: Sync Groups</field>
+            <field name="model_id" ref="model_whatsapp_account"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_sync_groups()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Session Cleanup -->
+        <record id="ir_cron_whatsapp_cleanup_sessions" model="ir.cron">
+            <field name="name">WhatsApp: Cleanup Expired Sessions</field>
+            <field name="model_id" ref="model_whatsapp_session"/>
+            <field name="state">code</field>
+            <field name="code">model.cleanup_expired_sessions()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Message Retry -->
+        <record id="ir_cron_whatsapp_retry_failed_messages" model="ir.cron">
+            <field name="name">WhatsApp: Retry Failed Messages</field>
+            <field name="model_id" ref="model_whatsapp_message"/>
+            <field name="state">code</field>
+            <field name="code">model.retry_failed_messages()</field>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Message Status Update -->
+        <record id="ir_cron_whatsapp_update_message_status" model="ir.cron">
+            <field name="name">WhatsApp: Update Message Status</field>
+            <field name="model_id" ref="model_whatsapp_message"/>
+            <field name="state">code</field>
+            <field name="code">model.update_message_status()</field>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Statistics Update -->
+        <record id="ir_cron_whatsapp_update_statistics" model="ir.cron">
+            <field name="name">WhatsApp: Update Statistics</field>
+            <field name="model_id" ref="model_whatsapp_account"/>
+            <field name="state">code</field>
+            <field name="code">model.update_statistics()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Auto Reply Processing -->
+        <record id="ir_cron_whatsapp_process_auto_replies" model="ir.cron">
+            <field name="name">WhatsApp: Process Auto Replies</field>
+            <field name="model_id" ref="model_whatsapp_message"/>
+            <field name="state">code</field>
+            <field name="code">model.process_auto_replies()</field>
+            <field name="interval_number">2</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Template Usage Statistics -->
+        <record id="ir_cron_whatsapp_update_template_stats" model="ir.cron">
+            <field name="name">WhatsApp: Update Template Statistics</field>
+            <field name="model_id" ref="model_whatsapp_template"/>
+            <field name="state">code</field>
+            <field name="code">model.update_template_statistics()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Rate Limit Reset -->
+        <record id="ir_cron_whatsapp_reset_rate_limits" model="ir.cron">
+            <field name="name">WhatsApp: Reset Rate Limits</field>
+            <field name="model_id" ref="model_whatsapp_account"/>
+            <field name="state">code</field>
+            <field name="code">model.reset_rate_limits()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+        <!-- WhatsApp Scheduled Messages -->
+        <record id="ir_cron_whatsapp_send_scheduled_messages" model="ir.cron">
+            <field name="name">WhatsApp: Send Scheduled Messages</field>
+            <field name="model_id" ref="model_whatsapp_message"/>
+            <field name="state">code</field>
+            <field name="code">model.send_scheduled_messages()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="active">True</field>
+            <field name="user_id" ref="base.user_root"/>
+        </record>
+        
+    </data>
+</odoo>

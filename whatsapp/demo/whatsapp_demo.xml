@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Demo WhatsApp Account -->
+        <record id="demo_whatsapp_account" model="whatsapp.account">
+            <field name="name">Demo WhatsApp Account</field>
+            <field name="phone_number">+1234567890</field>
+            <field name="display_name">Demo Company</field>
+            <field name="about">This is a demo WhatsApp account for testing purposes</field>
+            <field name="status">disconnected</field>
+            <field name="active">True</field>
+            <field name="auto_reply">True</field>
+            <field name="auto_reply_message">Thank you for your message. We will get back to you soon.</field>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <!-- Demo WhatsApp Contacts -->
+        <record id="demo_whatsapp_contact_1" model="whatsapp.contact">
+            <field name="name">John Doe</field>
+            <field name="phone_number">+1234567891</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="status">active</field>
+            <field name="is_business">False</field>
+            <field name="is_contact">True</field>
+            <field name="is_my_contact">True</field>
+            <field name="about">Customer contact</field>
+        </record>
+        
+        <record id="demo_whatsapp_contact_2" model="whatsapp.contact">
+            <field name="name">Jane Smith</field>
+            <field name="phone_number">+1234567892</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="status">active</field>
+            <field name="is_business">True</field>
+            <field name="is_contact">True</field>
+            <field name="is_my_contact">True</field>
+            <field name="about">Business contact</field>
+        </record>
+        
+        <record id="demo_whatsapp_contact_3" model="whatsapp.contact">
+            <field name="name">Bob Wilson</field>
+            <field name="phone_number">+1234567893</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="status">active</field>
+            <field name="is_business">False</field>
+            <field name="is_contact">True</field>
+            <field name="is_my_contact">False</field>
+            <field name="about">Potential customer</field>
+        </record>
+        
+        <!-- Demo WhatsApp Group -->
+        <record id="demo_whatsapp_group" model="whatsapp.group">
+            <field name="name">Demo Customer Group</field>
+            <field name="group_id">demo-customer-group@g.us</field>
+            <field name="wa_group_id">demo-customer-group@g.us</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="description">Demo group for testing purposes</field>
+            <field name="is_member">True</field>
+            <field name="is_admin">True</field>
+            <field name="member_count">5</field>
+            <field name="status">active</field>
+        </record>
+        
+        <!-- Demo WhatsApp Messages -->
+        <record id="demo_whatsapp_message_1" model="whatsapp.message">
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="contact_id" ref="demo_whatsapp_contact_1"/>
+            <field name="message">Hello, I'm interested in your products</field>
+            <field name="message_type">text</field>
+            <field name="direction">incoming</field>
+            <field name="from_number">+1234567891</field>
+            <field name="from_name">John Doe</field>
+            <field name="to_number">+1234567890</field>
+            <field name="to_name">Demo Company</field>
+            <field name="status">delivered</field>
+            <field name="timestamp" eval="datetime.datetime.now() - datetime.timedelta(hours=2)"/>
+        </record>
+        
+        <record id="demo_whatsapp_message_2" model="whatsapp.message">
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="contact_id" ref="demo_whatsapp_contact_1"/>
+            <field name="message">Thank you for your interest! We have a wide range of products available.</field>
+            <field name="message_type">text</field>
+            <field name="direction">outgoing</field>
+            <field name="from_number">+1234567890</field>
+            <field name="from_name">Demo Company</field>
+            <field name="to_number">+1234567891</field>
+            <field name="to_name">John Doe</field>
+            <field name="status">read</field>
+            <field name="timestamp" eval="datetime.datetime.now() - datetime.timedelta(hours=1, minutes=30)"/>
+        </record>
+        
+        <record id="demo_whatsapp_message_3" model="whatsapp.message">
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="contact_id" ref="demo_whatsapp_contact_2"/>
+            <field name="message">Can you send me the latest catalog?</field>
+            <field name="message_type">text</field>
+            <field name="direction">incoming</field>
+            <field name="from_number">+1234567892</field>
+            <field name="from_name">Jane Smith</field>
+            <field name="to_number">+1234567890</field>
+            <field name="to_name">Demo Company</field>
+            <field name="status">delivered</field>
+            <field name="timestamp" eval="datetime.datetime.now() - datetime.timedelta(hours=1)"/>
+        </record>
+        
+        <record id="demo_whatsapp_message_4" model="whatsapp.message">
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="contact_id" ref="demo_whatsapp_contact_2"/>
+            <field name="message">Sure! I'll send you the latest catalog right away.</field>
+            <field name="message_type">text</field>
+            <field name="direction">outgoing</field>
+            <field name="from_number">+1234567890</field>
+            <field name="from_name">Demo Company</field>
+            <field name="to_number">+1234567892</field>
+            <field name="to_name">Jane Smith</field>
+            <field name="status">delivered</field>
+            <field name="timestamp" eval="datetime.datetime.now() - datetime.timedelta(minutes=45)"/>
+        </record>
+        
+        <record id="demo_whatsapp_message_5" model="whatsapp.message">
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="group_id" ref="demo_whatsapp_group"/>
+            <field name="message">Welcome to our customer group! Feel free to ask any questions.</field>
+            <field name="message_type">text</field>
+            <field name="direction">outgoing</field>
+            <field name="from_number">+1234567890</field>
+            <field name="from_name">Demo Company</field>
+            <field name="to_number">demo-customer-group@g.us</field>
+            <field name="to_name">Demo Customer Group</field>
+            <field name="status">delivered</field>
+            <field name="timestamp" eval="datetime.datetime.now() - datetime.timedelta(minutes=30)"/>
+        </record>
+        
+        <!-- Demo WhatsApp Templates -->
+        <record id="demo_whatsapp_template_1" model="whatsapp.template">
+            <field name="name">Demo Welcome Template</field>
+            <field name="template_type">text</field>
+            <field name="category">greeting</field>
+            <field name="content">Hello {name}! Welcome to our demo store. We're excited to help you find what you need.</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="is_system">False</field>
+            <field name="is_shared">False</field>
+            <field name="active">True</field>
+            <field name="usage_count">5</field>
+            <field name="last_used" eval="datetime.datetime.now() - datetime.timedelta(days=1)"/>
+        </record>
+        
+        <record id="demo_whatsapp_template_2" model="whatsapp.template">
+            <field name="name">Demo Follow-up Template</field>
+            <field name="template_type">text</field>
+            <field name="category">follow_up</field>
+            <field name="content">Hi {name}, just following up on your inquiry. Do you have any questions about our products?</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="is_system">False</field>
+            <field name="is_shared">False</field>
+            <field name="active">True</field>
+            <field name="usage_count">3</field>
+            <field name="last_used" eval="datetime.datetime.now() - datetime.timedelta(days=2)"/>
+        </record>
+        
+        <record id="demo_whatsapp_template_3" model="whatsapp.template">
+            <field name="name">Demo Promotion Template</field>
+            <field name="template_type">text</field>
+            <field name="category">promotion</field>
+            <field name="content">Special offer for {name}! Get 20% off on your next purchase. Use code DEMO20. Valid until {end_date}.</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="is_system">False</field>
+            <field name="is_shared">True</field>
+            <field name="active">True</field>
+            <field name="usage_count">10</field>
+            <field name="last_used" eval="datetime.datetime.now() - datetime.timedelta(hours=6)"/>
+        </record>
+        
+        <!-- Demo WhatsApp Notifications -->
+        <record id="demo_whatsapp_notification_1" model="whatsapp.notification">
+            <field name="name">Demo Message Notification</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="message_id" ref="demo_whatsapp_message_1"/>
+            <field name="notification_type">message</field>
+            <field name="title">New message from John Doe</field>
+            <field name="content">Hello, I'm interested in your products</field>
+            <field name="is_read">True</field>
+            <field name="timestamp" eval="datetime.datetime.now() - datetime.timedelta(hours=2)"/>
+        </record>
+        
+        <record id="demo_whatsapp_notification_2" model="whatsapp.notification">
+            <field name="name">Demo Delivery Notification</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="message_id" ref="demo_whatsapp_message_2"/>
+            <field name="notification_type">delivery</field>
+            <field name="title">Message delivered to John Doe</field>
+            <field name="content">Your message has been delivered</field>
+            <field name="is_read">True</field>
+            <field name="timestamp" eval="datetime.datetime.now() - datetime.timedelta(hours=1, minutes=30)"/>
+        </record>
+        
+        <!-- Demo WhatsApp Sessions -->
+        <record id="demo_whatsapp_session" model="whatsapp.session">
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="session_id">demo-session-123</field>
+            <field name="status">active</field>
+            <field name="created_at" eval="datetime.datetime.now() - datetime.timedelta(hours=3)"/>
+            <field name="last_activity" eval="datetime.datetime.now() - datetime.timedelta(minutes=15)"/>
+            <field name="expires_at" eval="datetime.datetime.now() + datetime.timedelta(hours=1)"/>
+        </record>
+        
+        <!-- Demo WhatsApp Attachments -->
+        <record id="demo_whatsapp_attachment_1" model="whatsapp.attachment">
+            <field name="name">Demo Catalog.pdf</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="file_type">application/pdf</field>
+            <field name="file_size">1024000</field>
+            <field name="status">active</field>
+            <field name="upload_date" eval="datetime.datetime.now() - datetime.timedelta(days=1)"/>
+        </record>
+        
+        <record id="demo_whatsapp_attachment_2" model="whatsapp.attachment">
+            <field name="name">Demo Product Image.jpg</field>
+            <field name="account_id" ref="demo_whatsapp_account"/>
+            <field name="file_type">image/jpeg</field>
+            <field name="file_size">512000</field>
+            <field name="status">active</field>
+            <field name="upload_date" eval="datetime.datetime.now() - datetime.timedelta(hours=6)"/>
+        </record>
+        
+        <!-- Demo Partners with WhatsApp -->
+        <record id="demo_partner_with_whatsapp_1" model="res.partner">
+            <field name="name">Demo Customer 1</field>
+            <field name="email">demo1@example.com</field>
+            <field name="phone">+1234567891</field>
+            <field name="whatsapp_number">+1234567891</field>
+            <field name="is_company">False</field>
+            <field name="customer_rank">1</field>
+        </record>
+        
+        <record id="demo_partner_with_whatsapp_2" model="res.partner">
+            <field name="name">Demo Business Partner</field>
+            <field name="email">business@example.com</field>
+            <field name="phone">+1234567892</field>
+            <field name="whatsapp_number">+1234567892</field>
+            <field name="is_company">True</field>
+            <field name="customer_rank">1</field>
+            <field name="supplier_rank">1</field>
+        </record>
+        
+        <!-- Link demo contacts to partners -->
+        <record id="demo_whatsapp_contact_1" model="whatsapp.contact">
+            <field name="partner_id" ref="demo_partner_with_whatsapp_1"/>
+        </record>
+        
+        <record id="demo_whatsapp_contact_2" model="whatsapp.contact">
+            <field name="partner_id" ref="demo_partner_with_whatsapp_2"/>
+        </record>
+        
+    </data>
+</odoo>

@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        
+        <!-- WhatsApp Contact Tree View -->
+        <record id="whatsapp_contact_tree" model="ir.ui.view">
+            <field name="name">whatsapp.contact.tree</field>
+            <field name="model">whatsapp.contact</field>
+            <field name="arch" type="xml">
+                <list string="WhatsApp Contacts" decoration-success="status == 'active'" decoration-warning="status == 'blocked'">
+                    <field name="name"/>
+                    <field name="phone_number"/>
+                    <field name="is_business"/>
+                    <field name="last_seen"/>
+                    <field name="message_count"/>
+                    <field name="status"/>
+                    <field name="account_id"/>
+                    <field name="partner_id"/>
+                    <button name="action_send_message" type="object" title="Send Message" icon="fa-paper-plane"/>
+                    <button name="action_block_contact" type="object" title="Block Contact" icon="fa-ban" invisible="status == 'blocked'"/>
+                    <button name="action_unblock_contact" type="object" title="Unblock Contact" icon="fa-check" invisible="status != 'blocked'"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Contact Form View -->
+        <record id="whatsapp_contact_form" model="ir.ui.view">
+            <field name="name">whatsapp.contact.form</field>
+            <field name="model">whatsapp.contact</field>
+            <field name="arch" type="xml">
+                <form string="WhatsApp Contact">
+                    <header>
+                        <button name="action_send_message" type="object" string="Send Message" class="btn-primary"/>
+                        <button name="action_block_contact" type="object" string="Block" class="btn-secondary" invisible="status == 'blocked'"/>
+                        <button name="action_unblock_contact" type="object" string="Unblock" class="btn-secondary" invisible="status != 'blocked'"/>
+                        <!-- <button name="action_sync_contact" type="object" string="Sync" class="btn-secondary"/> -->
+                        <field name="status" widget="statusbar"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_messages" type="object" class="oe_stat_button" icon="fa-comments">
+                                <field name="message_count" widget="statinfo" string="Messages"/>
+                            </button>
+                            <!-- <button name="action_view_partner" type="object" class="oe_stat_button" icon="fa-user" invisible="not partner_id">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Partner</span>
+                                </div>
+                            </button> -->
+                        </div>
+                        
+                        <widget name="web_ribbon" title="Blocked" bg_color="bg-danger" invisible="status != 'blocked'"/>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Contact Name"/>
+                            </h1>
+                            <h2>
+                                <field name="phone_number" placeholder="Phone Number"/>
+                            </h2>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="account_id" readonly="1"/>
+                                <!-- <field name="wa_contact_id" readonly="1"/> -->
+                                <field name="is_business"/>
+                                <field name="is_contact"/>
+                                <!-- <field name="is_my_contact"/> -->
+                            </group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="last_seen" readonly="1"/>
+                                <field name="profile_pic_url" readonly="1"/>
+                                <field name="about" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Messages">
+                                <field name="message_ids" readonly="1">
+                                    <list>
+                                        <field name="timestamp"/>
+                                        <field name="direction"/>
+                                        <field name="message_type"/>
+                                        <field name="message"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </page>
+                            
+                            <page string="Partner Information" invisible="not partner_id">
+                                <group>
+                                    <field name="partner_id" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Contact Search View -->
+        <record id="whatsapp_contact_search" model="ir.ui.view">
+            <field name="name">whatsapp.contact.search</field>
+            <field name="model">whatsapp.contact</field>
+            <field name="arch" type="xml">
+                <search string="WhatsApp Contacts">
+                    <field name="name"/>
+                    <field name="phone_number"/>
+                    <field name="account_id"/>
+                    <field name="partner_id"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('status', '=', 'active')]"/>
+                    <filter string="Blocked" name="blocked" domain="[('status', '=', 'blocked')]"/>
+                    <separator/>
+                    <filter string="Business" name="business" domain="[('is_business', '=', True)]"/>
+                    <filter string="Personal" name="personal" domain="[('is_business', '=', False)]"/>
+                    <separator/>
+                    <!-- <filter string="My Contacts" name="my_contacts" domain="[('is_my_contact', '=', True)]"/>
+                    <filter string="Not in Contacts" name="not_in_contacts" domain="[('is_my_contact', '=', False)]"/> -->
+                    <separator/>
+                    <filter string="With Partner" name="with_partner" domain="[('partner_id', '!=', False)]"/>
+                    <filter string="Without Partner" name="without_partner" domain="[('partner_id', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Account" name="group_account" domain="[]" context="{'group_by': 'account_id'}"/>
+                        <filter string="Status" name="group_status" domain="[]" context="{'group_by': 'status'}"/>
+                        <filter string="Business" name="group_business" domain="[]" context="{'group_by': 'is_business'}"/>
+                        <filter string="Partner" name="group_partner" domain="[]" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Contact Action -->
+        <record id="whatsapp_contact_action" model="ir.actions.act_window">
+            <field name="name">WhatsApp Contacts</field>
+            <field name="res_model">whatsapp.contact</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="whatsapp_contact_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No contacts yet
+                </p>
+                <p>
+                    Contacts will appear here after you sync with WhatsApp or receive messages.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

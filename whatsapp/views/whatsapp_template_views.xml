@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        
+        <!-- WhatsApp Template Tree View -->
+        <record id="whatsapp_template_tree" model="ir.ui.view">
+            <field name="name">whatsapp.template.tree</field>
+            <field name="model">whatsapp.template</field>
+            <field name="arch" type="xml">
+                <list string="WhatsApp Templates" decoration-success="active == True" decoration-muted="active == False">
+                    <field name="name"/>
+                    <field name="template_type"/>
+                    <!-- <field name="category"/> -->
+                    <field name="language"/>
+                    <field name="usage_count"/>
+                    <field name="active"/>
+                    <field name="account_id"/>
+                    <button name="action_use_template" type="object" title="Use Template" icon="fa-paper-plane"/>
+                    <button name="action_duplicate" type="object" title="Duplicate" icon="fa-copy"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Template Form View -->
+        <record id="whatsapp_template_form" model="ir.ui.view">
+            <field name="name">whatsapp.template.form</field>
+            <field name="model">whatsapp.template</field>
+            <field name="arch" type="xml">
+                <form string="WhatsApp Template">
+                    <header>
+                        <button name="action_use_template" type="object" string="Use Template" class="btn-primary"/>
+                        <button name="action_duplicate" type="object" string="Duplicate" class="btn-secondary"/>
+                        <!-- <button name="action_test_template" type="object" string="Test" class="btn-secondary"/> -->
+                    </header>
+                    
+                    <sheet>
+                        <!-- <div class="oe_button_box" name="button_box">
+                            <button name="action_view_usage" type="object" class="oe_stat_button" icon="fa-bar-chart">
+                                <field name="usage_count" widget="statinfo" string="Usage"/>
+                            </button>
+                        </div> -->
+                        
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Template Name"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="account_id"/>
+                                <field name="template_type"/>
+                                <!-- <field name="category"/> -->
+                                <field name="language"/>
+                                <field name="active"/>
+                            </group>
+                            <group>
+                                <!-- <field name="tags" widget="many2many_tags"/> -->
+                                <field name="usage_count" readonly="1"/>
+                                <field name="last_used" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Content">
+                                <group>
+                                    <field name="content" widget="text" placeholder="Template content..."/>
+                                    <field name="variables" widget="text" placeholder="Available variables: {name}, {phone}, {company}..." readonly="1"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Preview">
+                                <group>
+                                    <!-- <field name="preview" widget="text" readonly="1"/> -->
+                                </group>
+                            </page>
+                            
+                            <page string="Settings">
+                                <group>
+                                    <group string="Template Settings">
+                                        <!-- <field name="is_system"/> -->
+                                        <!-- <field name="is_shared"/> -->
+                                        <!-- <field name="auto_translate"/> -->
+                                    </group>
+                                    <group string="Usage Statistics">
+                                        <field name="usage_count" readonly="1"/>
+                                        <field name="last_used" readonly="1"/>
+                                        <!-- <field name="success_rate" readonly="1"/> -->
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Template Search View -->
+        <record id="whatsapp_template_search" model="ir.ui.view">
+            <field name="name">whatsapp.template.search</field>
+            <field name="model">whatsapp.template</field>
+            <field name="arch" type="xml">
+                <search string="WhatsApp Templates">
+                    <field name="name"/>
+                    <field name="content"/>
+                    <!-- <field name="category"/> -->
+                    <!-- <field name="tags"/> -->
+                    <field name="account_id"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                    <separator/>
+                    <filter string="Text" name="text" domain="[('template_type', '=', 'text')]"/>
+                    <filter string="Image" name="image" domain="[('template_type', '=', 'image')]"/>
+                    <filter string="Video" name="video" domain="[('template_type', '=', 'video')]"/>
+                    <filter string="Document" name="document" domain="[('template_type', '=', 'document')]"/>
+                    <separator/>
+                    <!-- <filter string="System" name="system" domain="[('is_system', '=', True)]"/>
+                    <filter string="Custom" name="custom" domain="[('is_system', '=', False)]"/>
+                    <separator/>
+                    <filter string="Shared" name="shared" domain="[('is_shared', '=', True)]"/>
+                    <filter string="Private" name="private" domain="[('is_shared', '=', False)]"/> -->
+                    <group expand="0" string="Group By">
+                        <filter string="Account" name="group_account" domain="[]" context="{'group_by': 'account_id'}"/>
+                        <filter string="Type" name="group_type" domain="[]" context="{'group_by': 'template_type'}"/>
+                        <!-- <filter string="Category" name="group_category" domain="[]" context="{'group_by': 'category'}"/> -->
+                        <filter string="Language" name="group_language" domain="[]" context="{'group_by': 'language'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- WhatsApp Template Action -->
+        <record id="whatsapp_template_action" model="ir.actions.act_window">
+            <field name="name">WhatsApp Templates</field>
+            <field name="res_model">whatsapp.template</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="whatsapp_template_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first message template
+                </p>
+                <p>
+                    Templates help you send consistent messages quickly and efficiently.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>
